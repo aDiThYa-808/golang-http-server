@@ -14,7 +14,8 @@ func main() {
 
 	mux.Handle("/", middlewares.AuthMiddleware(http.HandlerFunc(homeHandler.HomeHandler)))
 
-	handler := middlewares.LoggingMiddleware(mux)
+	handler := middlewares.StatsRecorderMiddleware(mux)
+	handler = middlewares.LoggingMiddleware(handler)
 	handler = middlewares.RequestIdMiddleware(handler)
 
 	log.Print("Server running on port 4000.")
