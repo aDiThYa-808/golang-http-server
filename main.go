@@ -1,17 +1,18 @@
 package main
 
-import (
+import   (
 	//"fmt",
 	"log"
 	"net/http"
 
 	middlewares "github.com/aDiThYa-808/golang-http-server/internal/middlewares"
+	homeHandler "github.com/aDiThYa-808/golang-http-server/handlers/home"
 )
 
 func main() {
 	mux := http.NewServeMux()
 
-	mux.Handle("/", middlewares.AuthMiddleware(http.HandlerFunc(homeHandler)))
+	mux.Handle("/", middlewares.AuthMiddleware(http.HandlerFunc(homeHandler.HomeHandler)))
 
 	handler := middlewares.LoggingMiddleware(mux)
 	handler = middlewares.RequestIdMiddleware(handler)
@@ -20,6 +21,3 @@ func main() {
 	log.Fatal(http.ListenAndServe(":4000", handler))
 }
 
-func homeHandler(w http.ResponseWriter, r *http.Request) {
-	w.Write([]byte("Home - Welcome back!!\n"))
-}
