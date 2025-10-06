@@ -6,13 +6,14 @@ import   (
 	"net/http"
 
 	middlewares "github.com/aDiThYa-808/golang-http-server/internal/middlewares"
-	homeHandler "github.com/aDiThYa-808/golang-http-server/handlers/home"
+	handlers "github.com/aDiThYa-808/golang-http-server/handlers"
 )
 
 func main() {
 	mux := http.NewServeMux()
 
-	mux.Handle("/", middlewares.AuthMiddleware(http.HandlerFunc(homeHandler.HomeHandler)))
+	mux.Handle("/", middlewares.AuthMiddleware(http.HandlerFunc(handlers.HomeHandler)))
+	mux.Handle("/stats",middlewares.AuthMiddleware(http.HandlerFunc(handlers.StatsHandler)))
 
 	handler := middlewares.StatsRecorderMiddleware(mux)
 	handler = middlewares.LoggingMiddleware(handler)
