@@ -7,20 +7,20 @@ import (
 )
 
 type Stats struct{
-	Total int `json:"total"`
-	Success int `json:"success"`
-	ClientErr int `json:"client-error"`
-	ServerErr int `json:"server-error"`
-	Unauthorized int `json:"unauthorized"`
+	Total int64 `json:"total"`
+	Success int64 `json:"success"`
+	Client_Error int64 `json:"client-error"`
+	Server_Error int64 `json:"server-error"`
+	Unauthorized int64 `json:"unauthorized"`
 }
 
 func StatsHandler(w http.ResponseWriter, r *http.Request){
-	stats := map[string]int64{
-		"total":middlewares.GetStats("total"),
-		"success":middlewares.GetStats("success"),
-		"client_error":middlewares.GetStats("client-error"),
-		"server-error":middlewares.GetStats("server-error"),
-		"unauthorized":middlewares.GetStats("unauthorized"),
+	stats := Stats{
+		Total : middlewares.GetStats("total"),
+		Success : middlewares.GetStats("success"),
+		Client_Error : middlewares.GetStats("client-error"),
+		Server_Error : middlewares.GetStats("server-error"),
+		Unauthorized : middlewares.GetStats("unauthorized"),
 	}
 
 	w.Header().Set("Content-Type","application/json")
