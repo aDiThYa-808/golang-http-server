@@ -14,6 +14,7 @@ func main() {
 
 	mux.Handle("/", middlewares.AuthMiddleware(http.HandlerFunc(handlers.HomeHandler)))
 	mux.Handle("/stats",middlewares.AuthMiddleware(http.HandlerFunc(handlers.StatsHandler)))
+	mux.Handle("/work",http.HandlerFunc(handlers.WorkHandler))
 
 	handler := middlewares.StatsRecorderMiddleware(mux)
 	handler = middlewares.LoggingMiddleware(handler)
