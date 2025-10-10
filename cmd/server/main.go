@@ -6,7 +6,7 @@ import   (
 	"net/http"
 
 	middlewares "github.com/aDiThYa-808/golang-http-server/internal/middlewares"
-	handlers "github.com/aDiThYa-808/golang-http-server/handlers"
+	handlers "github.com/aDiThYa-808/golang-http-server/internal/handlers"
 )
 
 func main() {
