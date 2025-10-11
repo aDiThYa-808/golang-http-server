@@ -12,7 +12,8 @@ import   (
 
 const (
 	uploadDir = "./uploads"
-	maxMemory = 50 << 20 // this mean 50 * 1,048,576 = 52,428,800 which is 50mb
+	uploadsMaxMemory = 50 << 20 // this mean 50 * 1,048,576 = 52,428,800 which is 50mb
+	//defaultMaxMemory = 1 << 20 // 1048 mb
 )
 
 func init(){
@@ -29,6 +30,7 @@ func main() {
 	mux.Handle("/", middlewares.AuthMiddleware(http.HandlerFunc(handlers.HomeHandler)))
 	mux.Handle("/stats",middlewares.AuthMiddleware(http.HandlerFunc(handlers.StatsHandler)))
 	mux.Handle("/work",http.HandlerFunc(handlers.WorkHandler))
+	mux.Handle("/upload", middlewares.MaxBodySize(uploadsMaxMemory)(http.HandlerFunc(handlers.UploadHandler)))
 
 	handler := middlewares.StatsRecorderMiddleware(mux)
 	handler = middlewares.LoggingMiddleware(handler)
