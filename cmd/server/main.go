@@ -4,10 +4,24 @@ import   (
 	//"fmt",
 	"log"
 	"net/http"
+	"os"
 
 	middlewares "github.com/aDiThYa-808/golang-http-server/internal/middlewares"
 	handlers "github.com/aDiThYa-808/golang-http-server/internal/handlers"
 )
+
+const (
+	uploadDir = "./uploads"
+	maxMemory = 50 << 20 // this mean 50 * 1,048,576 = 52,428,800 which is 50mb
+)
+
+func init(){
+	if err := os.MkdirAll(uploadDir,0755); err != nil{
+		log.Fatal("Could'nt create uploads directory: \n %v",err)
+	}
+
+	log.Println("Successfully created uploads directory.")
+}
 
 func main() {
 	mux := http.NewServeMux()
