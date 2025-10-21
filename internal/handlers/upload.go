@@ -7,10 +7,17 @@ import (
 	"log"
 	"os"
 	"io"
+	"encoding/json"
 	"fmt"
 	"strings"
 	"github.com/google/uuid"
 )
+
+type response struct{
+	Success bool `json:"success"`
+	FileName string `json:"file_name"`
+	FileSize int64 `json:"file_size"`
+}
 
 const uploadDir = "./uploads"
 
@@ -57,9 +64,16 @@ func UploadHandler(w http.ResponseWriter, r *http.Request){
 		http.Error(w,"Failed to rename temp file",500)
 		return
 	}
+  
+	res := response{
+		Success : true,
+		FileName : finalName,
+		FileSize : header.Size, 
+	}
 
 	fmt.Println("Upload complete.")
-	fmt.Printf("Final file name: %v\n",finalName)
+	w.Header().Set("Content-Type","application/json")
+	json.NewEncoder(w).Encode(res)
 }
 
 func generateSafeFileName(name string) string{
