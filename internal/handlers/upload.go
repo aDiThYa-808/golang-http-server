@@ -28,7 +28,7 @@ func UploadHandler(w http.ResponseWriter, r *http.Request){
 	tempFile, tempErr := os.CreateTemp(uploadDir,"upload-*.tmp")
 
 	if tempErr != nil {
-		http.Error(w,"failed to create temp file",400)
+		http.Error(w,"failed to create temp file",500)
 		return
 	}
 
@@ -37,7 +37,7 @@ func UploadHandler(w http.ResponseWriter, r *http.Request){
 	_,copyErr:= io.Copy(tempFile,file)
 
 	if copyErr != nil{
-		http.Error(w,"failed to copy the file into a temp file",400)
+		http.Error(w,"failed to copy the file into a temp file",500)
 		return
 	}
 
