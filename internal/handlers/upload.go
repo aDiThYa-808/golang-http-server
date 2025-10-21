@@ -2,9 +2,14 @@ package handlers
 
 import (
 	"net/http"
+	"path/filepath"
+	"regexp"
 	"log"
 	"os"
 	"io"
+	"fmt"
+	"strings"
+	"github.com/google/uuid"
 )
 
 const uploadDir = "./uploads"
@@ -41,5 +46,53 @@ func UploadHandler(w http.ResponseWriter, r *http.Request){
 		return
 	}
 
-	log.Printf("%v\n",tempFile.Name())
+	log.Println("Temp file created in uploads directory")
+	log.Printf("Name of the temp file: %v\n",tempFile.Name())
+
+	finalName := filepath.Join(uploadDir,generateSafeFileName(header.Filename))
+
+	renameErr := os.Rename(tempFile.Name(),finalName)
+
+	if renameErr != nil{
+		http.Error(w,"Failed to rename temp file",500)
+		return
+	}
+
+	fmt.Println("Upload complete.")
+	fmt.Printf("Final file name: %v\n",finalName)
+}
+
+func generateSafeFileName(name string) string{
+
+	baseName := filepath.Base(name)
+	extension := filepath.Ext(baseName)
+
+	baseName = strings.ToLower(baseName)
+
+	baseName = strings.TrimSuffix(baseName,extension)
+
+	baseName = regexp.MustCompile(`[^a-z0-9._-]+`).ReplaceAllString(baseName, "_")
+
+	if len(baseName) > 50{
+		baseName = baseName[:50]
+	}
+
+	allowedExtensions := map[string]bool{
+		".jpg": true,
+		".jpeg": true,
+		".png": true,
+		".webp": true,
+		".pdf": true,
+		".mp3": true,
+		".mp4":true,
+		".mov":true,
+	}
+
+	if _,found := allowedExtensions[extension]; !found{
+		extension = ".bin"
+	}
+
+	safeName := fmt.Sprintf("%s_%s%s",uuid.New().String(),baseName,extension)
+
+	return safeName
 }
