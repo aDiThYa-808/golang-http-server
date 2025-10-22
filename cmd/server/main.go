@@ -30,6 +30,7 @@ func main() {
 	mux.Handle("/stats",middlewares.AuthMiddleware(http.HandlerFunc(handlers.StatsHandler)))
 	mux.Handle("/work",http.HandlerFunc(handlers.WorkHandler))
 	mux.Handle("/upload", middlewares.MaxBodySize(uploadsMaxBytes)(http.HandlerFunc(handlers.UploadHandler)))
+	mux.Handle("/download",http.HandlerFunc(handlers.DownloadHandler))
 
 	handler := middlewares.StatsRecorderMiddleware(mux)
 	handler = middlewares.LoggingMiddleware(handler)
