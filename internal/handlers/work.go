@@ -13,12 +13,12 @@ func WorkHandler(w http.ResponseWriter, r *http.Request){
 	limit,err := strconv.Atoi(limitStr)
 
 	if err != nil || limit < 0{
-		limit = 10000 //default limit will be 1000 if limit query was not mentioned.
+		limit = 10000 //default limit will be 10000 if limit query was not mentioned.
 	}
 
 
 	w.Write([]byte("Work Simulation has begun."))
-	w.Write([]byte("Printing Prime numbers starting from 2\n"))
+	w.Write([]byte("Computing Prime numbers starting from 2\n"))
 
 	num := 0
 	count:= 0
