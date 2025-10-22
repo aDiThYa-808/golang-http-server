@@ -6,8 +6,8 @@ import (
 
 func AuthMiddleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		expectedUser := "adi"
-		expectedPassword := "sybau"
+		expectedUser := "admin"
+		expectedPassword := "pass" // I have hardcoded the password because this is just a learning/personal project and i want to focus on the other important features.
 
 		user, pass, ok := r.BasicAuth()
 
