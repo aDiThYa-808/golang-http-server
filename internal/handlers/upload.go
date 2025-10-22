@@ -26,7 +26,7 @@ func UploadHandler(w http.ResponseWriter, r *http.Request){
 
 	if err != nil{
 		log.Printf("Error: %v\n",err)
-		http.Error(w,"Failed to get file",400)
+		http.Error(w,"Failed to read uploaded file from request",http.StatusBadRequest)
 		return
 	}
 
@@ -40,7 +40,7 @@ func UploadHandler(w http.ResponseWriter, r *http.Request){
 	tempFile, tempErr := os.CreateTemp(uploadDir,"upload-*.tmp")
 
 	if tempErr != nil {
-		http.Error(w,"failed to create temp file",500)
+		http.Error(w,"Failed to create temporary file",http.StatusInternalServerError)
 		return
 	}
 
@@ -49,7 +49,7 @@ func UploadHandler(w http.ResponseWriter, r *http.Request){
 	_,copyErr:= io.Copy(tempFile,file)
 
 	if copyErr != nil{
-		http.Error(w,"failed to copy the file into a temp file",500)
+		http.Error(w,"Failed to copy the file into a temporary file",http.StatusInternalServerError)
 		return
 	}
 
@@ -61,7 +61,7 @@ func UploadHandler(w http.ResponseWriter, r *http.Request){
 	renameErr := os.Rename(tempFile.Name(),finalName)
 
 	if renameErr != nil{
-		http.Error(w,"Failed to rename temp file",500)
+		http.Error(w,"Failed to rename temporary file",http.StatusInternalServerError)
 		return
 	}
   
