@@ -1,7 +1,6 @@
 package main
 
 import   (
-	//"fmt",
 	"log"
 	"net/http"
 	"os"
@@ -19,8 +18,6 @@ func init(){
 	if err := os.MkdirAll(uploadDir,0755); err != nil{
 		log.Fatal("Could'nt create uploads directory: \n %v",err)
 	}
-
-	log.Println("Successfully created uploads directory.")
 }
 
 func main() {
