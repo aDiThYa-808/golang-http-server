@@ -23,7 +23,7 @@ func init(){
 func main() {
 	mux := http.NewServeMux()
 
-	mux.Handle("/", middlewares.AuthMiddleware(http.HandlerFunc(handlers.HomeHandler)))
+	mux.Handle("/health", middlewares.AuthMiddleware(http.HandlerFunc(handlers.HealthHandler)))
 	mux.Handle("/stats",middlewares.AuthMiddleware(http.HandlerFunc(handlers.StatsHandler)))
 	mux.Handle("/work",http.HandlerFunc(handlers.WorkHandler))
 	mux.Handle("/upload", middlewares.MaxBodySize(uploadsMaxBytes)(http.HandlerFunc(handlers.UploadHandler)))
