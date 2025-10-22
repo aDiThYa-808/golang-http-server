@@ -3,6 +3,6 @@ package handlers
 import "net/http"
 
 func HomeHandler(w http.ResponseWriter, r *http.Request) {
-	w.Write([]byte("Home - Welcome back!!\n"))
+	w.Write([]byte("OK\n"))
 }
 
